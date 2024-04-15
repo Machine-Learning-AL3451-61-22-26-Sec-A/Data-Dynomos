@@ -1,13 +1,18 @@
 import streamlit as st
 import pandas as pd
-from sklearn.datasets import make_classification
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
 def generate_synthetic_data():
-    X, y = make_classification(n_samples=100, n_features=4, n_classes=3, n_clusters_per_class=1, random_state=42)
-    df = pd.DataFrame(X, columns=[f"Feature_{i+1}" for i in range(X.shape[1])])
+    # Generate synthetic data
+    np.random.seed(42)
+    n_samples = 100
+    n_features = 4
+    X = np.random.randn(n_samples, n_features)
+    y = np.random.randint(0, 3, n_samples)  # Three classes
+    df = pd.DataFrame(X, columns=[f"Feature_{i+1}" for i in range(n_features)])
     df['target'] = y
     return df
 
