@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score, classification_report
 
 def generate_synthetic_data():
     # Generate synthetic data
@@ -19,14 +16,14 @@ def generate_synthetic_data():
 def train_model(df):
     X = df.drop(columns=['target'])
     y = df['target']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    model = DecisionTreeClassifier()
-    model.fit(X_train, y_train)
-    return model, X_test, y_test
+    # Dummy model for demonstration
+    class_counts = y.value_counts().to_dict()
+    most_common_class = max(class_counts, key=class_counts.get)
+    return most_common_class
 
 def main():
-    st.title("Decision Tree Classifier")
-    st.write("This app demonstrates the working of a Decision Tree Classifier using synthetic data.")
+    st.title("Dummy Classifier")
+    st.write("This app demonstrates a dummy classifier using synthetic data.")
 
     # Generate synthetic data
     df = generate_synthetic_data()
@@ -36,26 +33,11 @@ def main():
     st.write(df)
 
     # Train model
-    model, X_test, y_test = train_model(df)
+    most_common_class = train_model(df)
 
-    # Evaluate model
-    st.subheader("Model Evaluation")
-    y_pred = model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    st.write("Accuracy:", accuracy)
-    st.write("Classification Report:")
-    st.write(classification_report(y_test, y_pred))
-
-    # Classification of new data
-    st.subheader("Classify New Data")
-    feature_inputs = []
-    for i in range(X_test.shape[1]):
-        feature_input = st.number_input(f"Enter feature {i+1}:", step=0.1)
-        feature_inputs.append(feature_input)
-    if st.button("Predict"):
-        new_data = [feature_inputs]
-        prediction = model.predict(new_data)[0]
-        st.write("Predicted Class:", prediction)
+    # Display most common class
+    st.subheader("Most Common Class")
+    st.write("The most common class in the dataset is:", most_common_class)
 
 if __name__ == "__main__":
     main()
