@@ -1,5 +1,5 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
@@ -8,22 +8,24 @@ from sklearn.metrics import accuracy_score
 def main():
     st.title("Tennis Play Prediction")
 
-    # load data from CSV
-    @st.cache
-    def load_data():
-        data = pd.read_csv('tennisdata.csv')
-        return data
-
-    data = load_data()
+    # Create a DataFrame
+    data = {
+        'Outlook': ['sunny', 'sunny', 'overcast', 'rainy', 'rainy', 'rainy', 'overcast', 'sunny', 'sunny', 'rainy', 'sunny', 'overcast', 'overcast', 'rainy'],
+        'Temperature': ['hot', 'hot', 'hot', 'mild', 'cool', 'cool', 'cool', 'mild', 'cool', 'mild', 'mild', 'mild', 'hot', 'mild'],
+        'Humidity': ['high', 'high', 'high', 'high', 'normal', 'normal', 'normal', 'high', 'normal', 'normal', 'normal', 'high', 'normal', 'high'],
+        'Windy': [False, True, False, False, False, True, True, False, False, False, True, True, False, True],
+        'PlayTennis': ['no', 'no', 'yes', 'yes', 'yes', 'no', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', 'yes', 'no']
+    }
+    df = pd.DataFrame(data)
 
     st.write("The first 5 values of data are:")
-    st.write(data.head())
+    st.write(df.head())
 
-    # obtain Train data and Train output
-    X = data.iloc[:,:-1]
+    # Obtain Train data and Train output
+    X = df.iloc[:,:-1]
     st.write("\nThe First 5 values of train data are:\n", X.head())
 
-    y = data.iloc[:,-1]
+    y = df.iloc[:,-1]
     st.write("\nThe first 5 values of Train output are:\n", y.head())
 
     # Convert them to numbers 
@@ -35,9 +37,6 @@ def main():
 
     le_Humidity = LabelEncoder()
     X.Humidity = le_Humidity.fit_transform(X.Humidity)
-
-    le_Windy = LabelEncoder()
-    X.Windy = le_Windy.fit_transform(X.Windy)
 
     st.write("\nNow the Train data is :\n",X.head())
 
@@ -54,4 +53,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
