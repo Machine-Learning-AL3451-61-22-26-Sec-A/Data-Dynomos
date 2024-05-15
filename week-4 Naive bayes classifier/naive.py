@@ -8,10 +8,10 @@ from sklearn.metrics import accuracy_score
 def main():
     st.title("Tennis Play Prediction")
 
-    # Load data from CSV
-    
+    # load data from CSV
+    @st.cache
     def load_data():
-        data = pd.read_csv('C:/Users/MERLLIN YAZHINI/Desktop/Machine learning obser/wee4/tennisdata.csv')
+        data = pd.read_csv('tennisdata.csv')
         return data
 
     data = load_data()
@@ -19,11 +19,14 @@ def main():
     st.write("The first 5 values of data are:")
     st.write(data.head())
 
-    # Obtain Train data and Train output
-    X = data.iloc[:, :-1]
-    y = data.iloc[:, -1]
+    # obtain Train data and Train output
+    X = data.iloc[:,:-1]
+    st.write("\nThe First 5 values of train data are:\n", X.head())
 
-    # Convert them to numbers
+    y = data.iloc[:,-1]
+    st.write("\nThe first 5 values of Train output are:\n", y.head())
+
+    # Convert them to numbers 
     le_outlook = LabelEncoder()
     X.Outlook = le_outlook.fit_transform(X.Outlook)
 
@@ -36,17 +39,19 @@ def main():
     le_Windy = LabelEncoder()
     X.Windy = le_Windy.fit_transform(X.Windy)
 
+    st.write("\nNow the Train data is :\n",X.head())
+
     le_PlayTennis = LabelEncoder()
     y = le_PlayTennis.fit_transform(y)
+    st.write("\nNow the Train output is\n",y)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
+    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.20, random_state=42)
 
     classifier = GaussianNB()
-    classifier.fit(X_train, y_train)
+    classifier.fit(X_train,y_train)
 
-    accuracy = accuracy_score(classifier.predict(X_test), y_test)
-
-    st.write(f"Accuracy is: {accuracy}")
+    st.write("Accuracy is:",accuracy_score(classifier.predict(X_test),y_test))
 
 if __name__ == "__main__":
     main()
+
