@@ -5,13 +5,34 @@ import numpy as np
 # Title of the app
 st.title("k-Nearest Neighbour (k-NN) Classification of Iris Dataset")
 
-# Load Iris dataset
+# Manually load Iris dataset
 def load_iris_dataset():
-    from sklearn.datasets import load_iris
-    iris = load_iris()
-    data = pd.DataFrame(iris.data, columns=iris.feature_names)
-    data['target'] = iris.target
-    return data, iris.target_names
+    data = {
+        'sepal length (cm)': [5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9,
+                              5.4, 4.8, 4.8, 4.3, 5.8, 5.7, 5.4, 5.1, 5.7, 5.1,
+                              5.4, 5.1, 4.6, 5.1, 4.8, 5.0, 5.0, 5.2, 5.2, 4.7,
+                              4.8, 5.4, 5.2, 5.5, 4.9, 5.0, 5.5, 4.9, 4.4, 5.1,
+                              5.0, 4.5, 4.4, 5.0, 5.1, 4.8, 5.1, 4.6, 5.3, 5.0],
+        'sepal width (cm)': [3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1,
+                             3.7, 3.4, 3.0, 3.0, 4.0, 4.4, 3.9, 3.5, 3.8, 3.8,
+                             3.4, 3.7, 3.6, 3.3, 3.4, 3.0, 3.4, 3.5, 3.4, 3.2,
+                             3.1, 3.4, 4.1, 4.2, 3.1, 3.2, 3.5, 3.6, 3.0, 3.4,
+                             3.5, 2.3, 3.2, 3.5, 3.8, 3.0, 3.8, 3.2, 3.7, 3.3],
+        'petal length (cm)': [1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5,
+                              1.5, 1.6, 1.4, 1.1, 1.2, 1.5, 1.3, 1.4, 1.7, 1.5,
+                              1.7, 1.5, 1.0, 1.7, 1.9, 1.6, 1.6, 1.5, 1.4, 1.6,
+                              1.6, 1.5, 1.5, 1.4, 1.5, 1.2, 1.3, 1.5, 1.3, 1.5,
+                              1.3, 1.3, 1.3, 1.6, 1.9, 1.4, 1.6, 1.4, 1.5, 1.4],
+        'petal width (cm)': [0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1,
+                             0.2, 0.2, 0.1, 0.1, 0.4, 0.4, 0.3, 0.3, 0.4, 0.3,
+                             0.3, 0.2, 0.2, 0.3, 0.2, 0.2, 0.2, 0.4, 0.2, 0.2,
+                             0.2, 0.4, 0.1, 0.2, 0.2, 0.1, 0.2, 0.1, 0.2, 0.3,
+                             0.3, 0.3, 0.2, 0.6, 0.4, 0.3, 0.2, 0.2, 0.2, 0.2],
+        'target': [0]*50 + [1]*50 + [2]*50
+    }
+    feature_names = ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+    target_names = np.array(['setosa', 'versicolor', 'virginica'])
+    return pd.DataFrame(data), target_names
 
 # Euclidean distance calculation
 def euclidean_distance(point1, point2):
