@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import altair as alt
 
 # Custom implementation of k-Means algorithm
 def kmeans(X, num_clusters, max_iter=100):
@@ -17,13 +16,13 @@ def kmeans(X, num_clusters, max_iter=100):
         centroids = new_centroids
     return labels, centroids
 
-# Custom implementation of EM algorithm
-def em(X, num_clusters, max_iter=100):
+# Custom implementation of EM algorithm with regularization
+def em(X, num_clusters, max_iter=100, reg_param=1e-6):
     np.random.seed(0)
     n, d = X.shape
     weights = np.ones((n, num_clusters)) / num_clusters
     means = X[np.random.choice(n, num_clusters, replace=False)]
-    covariances = np.array([np.cov(X, rowvar=False)] * num_clusters)
+    covariances = np.array([np.cov(X, rowvar=False) + reg_param * np.eye(d) for _ in range(num_clusters)])
     
     for _ in range(max_iter):
         # E-step
@@ -38,7 +37,7 @@ def em(X, num_clusters, max_iter=100):
         means = (X.T @ weights / nk).T
         for k in range(num_clusters):
             diff = X - means[k]
-            covariances[k] = (weights[:, k][:, None] * diff).T @ diff / nk[k]
+            covariances[k] = (weights[:, k][:, None] * diff).T @ diff / nk[k] + reg_param * np.eye(d)
     
     labels = np.argmax(weights, axis=1)
     return labels, means, covariances
@@ -62,7 +61,7 @@ Feature1,Feature2
 '''
 
 # Function to load sample data
-@st.cache_data
+@st.cache
 def load_sample_data():
     from io import StringIO
     return pd.read_csv(StringIO(sample_data))
@@ -89,7 +88,7 @@ if len(features) >= 2:
     # Apply k-Means algorithm
     kmeans_labels, _ = kmeans(X, num_clusters)
     
-    # Apply EM algorithm
+    # Apply EM algorithm with regularization
     em_labels, _, _ = em(X, num_clusters)
     
     # Add cluster labels to the data
@@ -99,16 +98,24 @@ if len(features) >= 2:
     st.write("Clustering results:")
     st.write(data)
     
-    # Plot the clusters
-    fig, axes = plt.subplots(1, 2, figsize=(14, 7))
-    
-    sns.scatterplot(ax=axes[0], x=X[:, 0], y=X[:, 1], hue=data['EM_Cluster'], palette='viridis')
-    axes[0].set_title('EM Clustering')
-    
-    sns.scatterplot(ax=axes[1], x=X[:, 0], y=X[:, 1], hue=data['KMeans_Cluster'], palette='viridis')
-    axes[1].set_title('k-Means Clustering')
-    
-    st.pyplot(fig)
+    # Plot the clusters using Altair
+    def plot_clusters(data, x_col, y_col, cluster_col, title):
+        chart = alt.Chart(data).mark_circle(size=60).encode(
+            x=alt.X(x_col, title=x_col),
+            y=alt.Y(y_col, title=y_col),
+            color=alt.Color(cluster_col, legend=alt.Legend(title=cluster_col)),
+            tooltip=[x_col, y_col, cluster_col]
+        ).properties(
+            title=title,
+            width=400,
+            height=400
+        ).interactive()
+        return chart
+
+    x_col, y_col = features[0], features[1]
+    em_chart = plot_clusters(data, x_col, y_col, 'EM_Cluster', 'EM Clustering')
+    kmeans_chart = plot_clusters(data, x_col, y_col, 'KMeans_Cluster', 'k-Means Clustering')
+
+    st.altair_chart(em_chart | kmeans_chart)
 else:
     st.warning("Please select at least two features for clustering.")
-
