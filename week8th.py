@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from scipy.spatial import distance
 
 # Title of the app
 st.title("k-Nearest Neighbour (k-NN) Classification of Iris Dataset")
@@ -14,13 +13,17 @@ def load_iris_dataset():
     data['target'] = iris.target
     return data, iris.target_names
 
+# Euclidean distance calculation
+def euclidean_distance(point1, point2):
+    return np.sqrt(np.sum((point1 - point2) ** 2))
+
 # k-NN algorithm implementation
 def knn_predict(X_train, y_train, X_test, k):
     y_pred = []
     for test_point in X_test:
         distances = []
         for i, train_point in enumerate(X_train):
-            dist = distance.euclidean(test_point, train_point)
+            dist = euclidean_distance(test_point, train_point)
             distances.append((dist, y_train[i]))
         distances.sort(key=lambda x: x[0])
         neighbors = distances[:k]
