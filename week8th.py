@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 # Title of the app
+st.header("22AIA TEAM DATA DYNAMOS")
 st.title("k-Nearest Neighbour (k-NN) Classification of Iris Dataset")
 
 # Manually load Iris dataset
