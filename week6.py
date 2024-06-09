@@ -11,6 +11,7 @@ data = pd.DataFrame({
 })
 
 # Display the data
+st.header("22AIA TEAM DATA DYNAMOS")
 st.title("Bayesian Network for COVID-19 Diagnosis")
 st.write("Sample Data:")
 st.write(data)
