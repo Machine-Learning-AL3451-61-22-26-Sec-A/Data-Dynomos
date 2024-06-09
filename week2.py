@@ -28,7 +28,7 @@ def evaluate_model(df, most_common_class):
     return accuracy, y_pred
 
 def main():
-    st.title("Dummy Classifier")
+    st.title("Decision Tree Classifier")
     st.write("This app demonstrates a dummy classifier using synthetic data.")
 
     # Generate synthetic data
