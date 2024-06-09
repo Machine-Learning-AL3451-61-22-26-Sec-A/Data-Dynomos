@@ -28,6 +28,7 @@ def evaluate_model(df, most_common_class):
     return accuracy, y_pred
 
 def main():
+    st.header("22AIA TEAM DATA DYNAMOS")
     st.title("Decision Tree Classifier")
     st.write("This app demonstrates a dummy classifier using synthetic data.")
 
