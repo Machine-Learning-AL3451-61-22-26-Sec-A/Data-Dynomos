@@ -21,6 +21,7 @@ def candidate_elimination(examples):
 
 def main():
     st.title("Candidate Elimination Algorithm")
+    st.subheader("22AIA TEAM DATA DYNAMOS")
     st.write("Enter examples in the form of weather conditions (Outlook, Temperature, Humidity, Windy) and the corresponding sport decision (Yes/No).")
 
     examples = st.text_area("Enter examples separated by newline", "Sunny, Hot, High, False, No\nSunny, Hot, High, True, No\nOvercast, Hot, High, False, Yes\nRain, Mild, High, False, Yes\nRain, Cool, Normal, False, Yes\nRain, Cool, Normal, True, No\nOvercast, Cool, Normal, True, Yes\nSunny, Mild, High, False, No\nSunny, Cool, Normal, False, Yes\nRain, Mild, Normal, False, Yes\nSunny, Mild, Normal, True, Yes\nOvercast, Mild, High, True, Yes\nOvercast, Hot, Normal, False, Yes\nRain, Mild, High, True, No")
