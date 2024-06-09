@@ -20,7 +20,7 @@ def candidate_elimination(examples):
     return specific_h, general_h
 
 def main():
-     st.subheader("22AIA TEAM DATA DYNAMOS")
+    st.header("22AIA TEAM DATA DYNAMOS")
     st.title("Candidate Elimination Algorithm")
     st.write("Enter examples in the form of weather conditions (Outlook, Temperature, Humidity, Windy) and the corresponding sport decision (Yes/No).")
 
