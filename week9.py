@@ -20,6 +20,7 @@ def locally_weighted_regression(X, y, x_query, tau):
     return np.dot(x_query_, theta)
 
 # Streamlit App
+st.header("22AIA TEAM DATA DYNAMOS")
 st.title("Locally Weighted Regression")
 
 # Upload dataset
