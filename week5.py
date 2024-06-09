@@ -81,6 +81,7 @@ def evaluate_model(df, p_pos, p_neg, p_word_given_pos, p_word_given_neg):
 
 # Streamlit app
 def main():
+    st.header("22AIA TEAM DATA DYNAMOS")
     st.title("Naive Bayes Document Classification")
 
     # Display dataset
